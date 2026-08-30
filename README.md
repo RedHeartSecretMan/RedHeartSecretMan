@@ -7,8 +7,6 @@
 **把复杂的 AI 系统做得可靠、可解释、可复现。**  
 *Building trustworthy AI systems — from inference runtimes to evidence-first agents.*
 
-[![Profile views](https://komarev.com/ghpvc/?username=RedHeartSecretMan&style=flat-square&color=e11d48)](https://github.com/RedHeartSecretMan)
-
 ![Rust](https://img.shields.io/badge/Rust-111827?style=flat-square&logo=rust&logoColor=white)
 ![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)
 ![CUDA](https://img.shields.io/badge/CUDA-76B900?style=flat-square&logo=nvidia&logoColor=white)
