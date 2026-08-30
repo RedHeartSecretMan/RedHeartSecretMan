@@ -47,7 +47,7 @@ I care about more than making systems work. I care about making their behavior e
   </tr>
 </table>
 
-## 📊 GitHub in Motion
+## 📊 GitHub Stats
 
 <div align="center">
 
