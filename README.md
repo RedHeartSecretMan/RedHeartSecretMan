@@ -15,7 +15,7 @@
 
 </div>
 
-## 🧭 What · Why · How
+## 🧭 Focus & Philosophy
 
 | **What** | **Why** | **How** |
 | --- | --- | --- |
