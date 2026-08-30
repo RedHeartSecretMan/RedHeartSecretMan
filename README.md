@@ -21,8 +21,6 @@
 | --- | --- | --- |
 | AI inference engines and agent workflows | Complex AI systems should be trustworthy, inspectable, and reproducible | Rust, Python, CUDA, explicit contracts, evidence-first design, and rigorous verification |
 
-I care about more than making systems work. I care about making their behavior explainable, their evidence traceable, and their results reproducible.
-
 ## 🚀 Featured Projects
 
 <table>
