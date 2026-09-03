@@ -26,19 +26,19 @@
 <table>
   <tr>
     <td colspan="2" valign="top">
-      <h3><a href="https://github.com/RedHeartSecretMan/vllm-oxide">🦀 vllm-oxide</a></h3>
+      <p><strong><a href="https://github.com/RedHeartSecretMan/vllm-oxide">🦀 vllm-oxide</a></strong></p>
       <p>A single-GPU LLM inference engine in Rust, with paged KV cache, prefix caching, continuous batching, and correctness gates against reference implementations.</p>
       <p><code>Rust</code> <code>CUDA</code> <code>LLM Inference</code> <code>Paged Attention</code></p>
     </td>
   </tr>
   <tr>
     <td width="50%" valign="top">
-      <h3><a href="https://github.com/RedHeartSecretMan/a-share-research-skill">🔎 A-Share Research Skill</a></h3>
+      <p><strong><a href="https://github.com/RedHeartSecretMan/a-share-research-skill">🔎 A-Share Research Skill</a></strong></p>
       <p>An evidence-first research system for China A-shares, with deterministic data lineage, explicit provenance, fail-closed identity, and reproducible valuation.</p>
       <p><code>Python</code> <code>Agent Skill</code> <code>Research</code> <code>Data Provenance</code></p>
     </td>
     <td width="50%" valign="top">
-      <h3><a href="https://github.com/RedHeartSecretMan/dag-skill">🕸️ DAG Skill</a></h3>
+      <p><strong><a href="https://github.com/RedHeartSecretMan/dag-skill">🕸️ DAG Skill</a></strong></p>
       <p>An orchestration skill for approved Spec-and-Ticket DAGs, coordinating isolated execution agents with evidence-aware review and bounded rework.</p>
       <p><code>Python</code> <code>Multi-Agent</code> <code>Git</code> <code>Workflow Automation</code></p>
     </td>
