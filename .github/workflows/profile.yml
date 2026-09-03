@@ -44,7 +44,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           USERNAME: ${{ github.repository_owner }}
 
-      - name: Remove duplicate 3D summary
+      - name: Remove duplicate 3D summary and period
         shell: bash
         run: |
           python3 - <<'PY'
@@ -87,8 +87,12 @@ jobs:
               if source.count(start_marker) != 1 or source.count(period_marker) != 1:
                   raise SystemExit(f"{path}: pinned generator structure changed")
 
-              start = source.index(start_marker) + len("<g>")
-              end = source.index(period_marker, start)
+              closing_marker = "</g></svg>"
+              if not source.endswith(closing_marker):
+                  raise SystemExit(f"{path}: expected metadata group at end of SVG")
+
+              start = source.index(start_marker)
+              end = source.rfind(closing_marker) + len("</g>")
               stripped = source[:start] + source[end:]
               stripped_root = ET.fromstring(stripped)
               if any(
@@ -96,8 +100,16 @@ jobs:
                   for node in stripped_root.iter(f"{svg}text")
               ):
                   raise SystemExit(f"{path}: summary removal verification failed")
+              if any(
+                  node.attrib.get("y") == "20"
+                  and node.attrib.get("text-anchor") == "end"
+                  and node.text
+                  and " / " in node.text
+                  for node in stripped_root.iter(f"{svg}text")
+              ):
+                  raise SystemExit(f"{path}: period removal verification failed")
               path.write_text(stripped, encoding="utf-8")
-              print(f"stripped duplicate summary from {path}")
+              print(f"stripped duplicate summary and period from {path}")
           PY
 
       - name: Publish 3D contribution graph
