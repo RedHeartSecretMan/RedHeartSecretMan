@@ -44,6 +44,62 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           USERNAME: ${{ github.repository_owner }}
 
+      - name: Remove duplicate 3D summary
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import xml.etree.ElementTree as ET
+
+          svg = "{http://www.w3.org/2000/svg}"
+          paths = (
+              Path("profile-3d-contrib/profile-season-animate.svg"),
+              Path("profile-3d-contrib/profile-night-rainbow.svg"),
+          )
+
+          for path in paths:
+              source = path.read_text(encoding="utf-8")
+              root = ET.fromstring(source)
+              summary_y = str(int(float(root.attrib["height"]) - 20))
+              summary = [
+                  node
+                  for node in root.iter(f"{svg}text")
+                  if node.attrib.get("y") == summary_y
+              ]
+              periods = [
+                  node
+                  for node in root.iter(f"{svg}text")
+                  if node.attrib.get("y") == "20"
+                  and node.attrib.get("text-anchor") == "end"
+                  and node.text
+                  and " / " in node.text
+              ]
+              if len(summary) != 4 or "contributions" not in [node.text for node in summary]:
+                  raise SystemExit(f"{path}: expected contribution/star/fork summary")
+              if len(periods) != 1:
+                  raise SystemExit(f"{path}: expected one period label")
+
+              start_marker = (
+                  '<g><text style="font-size: 32px; font-weight: bold;" '
+                  f'x="384" y="{summary_y}"'
+              )
+              period_marker = '<text style="font-size: 16px;" x="1260" y="20"'
+              if source.count(start_marker) != 1 or source.count(period_marker) != 1:
+                  raise SystemExit(f"{path}: pinned generator structure changed")
+
+              start = source.index(start_marker) + len("<g>")
+              end = source.index(period_marker, start)
+              stripped = source[:start] + source[end:]
+              stripped_root = ET.fromstring(stripped)
+              if any(
+                  node.attrib.get("y") == summary_y
+                  for node in stripped_root.iter(f"{svg}text")
+              ):
+                  raise SystemExit(f"{path}: summary removal verification failed")
+              path.write_text(stripped, encoding="utf-8")
+              print(f"stripped duplicate summary from {path}")
+          PY
+
       - name: Publish 3D contribution graph
         uses: crazy-max/ghaction-github-pages@1d6ee9b181a81033a16bd707a1401afa978daab4 # v5
         with:
