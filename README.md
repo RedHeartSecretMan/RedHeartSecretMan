@@ -50,17 +50,6 @@
 <div align="center">
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://github-stats-extended.vercel.app/api?username=RedHeartSecretMan&role=OWNER&hide_title=true&hide_border=true&show_icons=true&text_color=ffffff&icon_color=fb7185&bg_color=0%2C111827%2C4c0519%2C881337&theme=graywhite" />
-  <img height="145" alt="Wang Hao's GitHub statistics" src="https://github-stats-extended.vercel.app/api?username=RedHeartSecretMan&role=OWNER&hide_title=true&hide_border=true&show_icons=true&text_color=111827&icon_color=e11d48&bg_color=0%2Cfff1f2%2Cffe4e6%2Cfecdd3&theme=graywhite" />
-</picture>
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://github-stats-extended.vercel.app/api/top-langs/?username=RedHeartSecretMan&role=OWNER&hide_title=true&hide_border=true&layout=compact&langs_count=8&hide=Jupyter%20Notebook%2CHTML%2CCSS&exclude_repo=LearnNoteBook%2CPythonProject%2CJavaScriptProject%2CCCppProject%2CPythonScript%2CMatlabCode%2CCCppScript%2CJavaCode&text_color=ffffff&icon_color=fb7185&bg_color=0%2C111827%2C4c0519%2C881337&theme=graywhite" />
-  <img height="145" alt="Most used languages" src="https://github-stats-extended.vercel.app/api/top-langs/?username=RedHeartSecretMan&role=OWNER&hide_title=true&hide_border=true&layout=compact&langs_count=8&hide=Jupyter%20Notebook%2CHTML%2CCSS&exclude_repo=LearnNoteBook%2CPythonProject%2CJavaScriptProject%2CCCppProject%2CPythonScript%2CMatlabCode%2CCCppScript%2CJavaCode&text_color=111827&icon_color=e11d48&bg_color=0%2Cfff1f2%2Cffe4e6%2Cfecdd3&theme=graywhite" />
-</picture>
-
-<br><br>
-
-<picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/RedHeartSecretMan/RedHeartSecretMan/profile3d/profile-night-rainbow.svg" />
   <img alt="3D contribution graph" src="https://raw.githubusercontent.com/RedHeartSecretMan/RedHeartSecretMan/profile3d/profile-season-animate.svg" />
 </picture>
