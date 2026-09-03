@@ -33,12 +33,12 @@
   </tr>
   <tr>
     <td width="50%" valign="top">
-      <p><strong><a href="https://github.com/RedHeartSecretMan/a-share-research-skill">🔎 A-Share Research Skill</a></strong></p>
+      <p><strong><a href="https://github.com/RedHeartSecretMan/a-share-research-skill">🔎 a-share-research-skill</a></strong></p>
       <p>An evidence-first research system for China A-shares, with deterministic data lineage, explicit provenance, fail-closed identity, and reproducible valuation.</p>
       <p><code>Python</code> <code>Agent Skill</code> <code>Research</code> <code>Data Provenance</code></p>
     </td>
     <td width="50%" valign="top">
-      <p><strong><a href="https://github.com/RedHeartSecretMan/dag-skill">🕸️ DAG Skill</a></strong></p>
+      <p><strong><a href="https://github.com/RedHeartSecretMan/dag-skill">🕸️ dag-skill</a></strong></p>
       <p>An orchestration skill for approved Spec-and-Ticket DAGs, coordinating isolated execution agents with evidence-aware review and bounded rework.</p>
       <p><code>Python</code> <code>Multi-Agent</code> <code>Git</code> <code>Workflow Automation</code></p>
     </td>
