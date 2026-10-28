@@ -1,58 +1,69 @@
 <div align="center">
 
-# Hi, I'm Wang Hao 👋
+# Wang Hao
 
-[![Typing SVG](https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=600&size=20&duration=3200&pause=900&color=E11D48&center=true&vCenter=true&width=760&lines=What+%E2%86%92+Why+%E2%86%92+How;Rust+LLM+Inference+%C2%B7+Python+Agent+Tooling;Correctness+%C2%B7+Evidence+%C2%B7+Reproducibility)](https://github.com/RedHeartSecretMan)
+**What · Why · How**
 
-**把复杂的 AI 系统做得可靠、可解释、可复现。**  
-*Building trustworthy AI systems — from inference runtimes to evidence-first agent workflows.*
+把复杂的 AI 系统做得可靠、可解释、可复现。<br>
+<i>Building trustworthy AI systems, from inference runtimes to evidence-first agent workflows.</i>
 
-![Rust](https://img.shields.io/badge/Rust-111827?style=flat-square&logo=rust&logoColor=white)
-![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)
-![CUDA](https://img.shields.io/badge/CUDA-76B900?style=flat-square&logo=nvidia&logoColor=white)
-![LLM Systems](https://img.shields.io/badge/LLM-Systems-e11d48?style=flat-square)
-![Agent Tooling](https://img.shields.io/badge/Agent-Tooling-be123c?style=flat-square)
+[Personal Site](https://redheartsecretman.top/) · [3D Résumé](https://me.redheartsecretman.top/)
+
+<br>
+
+<img src="https://img.shields.io/badge/Rust-111827?style=flat-square&logo=rust&logoColor=white" alt="Rust">
+<img src="https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white" alt="Python">
+<img src="https://img.shields.io/badge/CUDA-76B900?style=flat-square&logo=nvidia&logoColor=white" alt="CUDA">
+<img src="https://img.shields.io/badge/vLLM-LLM_Serving-e11d48?style=flat-square" alt="vLLM">
+<img src="https://img.shields.io/badge/Agent-Workflows-be123c?style=flat-square" alt="Agent Workflows">
 
 </div>
 
-## 🧭 Focus & Approach
+## Focus
 
-| **What** | **Why** | **How** |
-| --- | --- | --- |
-| AI inference engines and agent workflows | Complex AI systems should be trustworthy, inspectable, and reproducible | Rust, Python, CUDA, explicit contracts, evidence-first design, and rigorous verification |
+**What**: LLM serving, inference engines, and agent workflows.
 
-## 🚀 Featured Projects
+**Why**: Complex AI systems should be trustworthy, inspectable, and reproducible.
+
+**How**: Rust, Python, CUDA, pinned dependencies, explicit contracts, and evidence-backed verification.
+
+## Projects
 
 <table>
   <tr>
     <td colspan="2" valign="top">
-      <p><strong><a href="https://github.com/RedHeartSecretMan/vllm-dsf-rearguard">🛡️ vllm-dsf-rearguard</a></strong></p>
-      <p>An A100-focused DeepSeek-V4.1-Flash adaptation on pinned vLLM, serving 1M context with multimodal inputs and evidence-backed validation.</p>
-      <p><code>Python</code> <code>vLLM</code> <code>A100</code> <code>Inference Validation</code></p>
-    </td>
-  </tr>
-  <tr>
-    <td colspan="2" valign="top">
-      <p><strong><a href="https://github.com/RedHeartSecretMan/vllm-oxide">🦀 vllm-oxide</a></strong></p>
-      <p>A single-GPU, offline LLM inference engine in Rust with continuous batching, prefix caching, paged KV cache, and correctness gates against reference implementations.</p>
-      <p><code>Rust</code> <code>CUDA</code> <code>LLM Inference</code> <code>Paged Attention</code></p>
+      <h3><a href="https://github.com/RedHeartSecretMan/vllm-dsf-rearguard">vllm-dsf-rearguard</a></h3>
+      <p>Serves DeepSeek-V4.1-Flash on 8×A100 with a pinned vLLM image and an adaptation layer, plus tools for weight verification, image builds, guarded launch, and functional and performance testing.</p>
+      <p><code>Python</code> <code>vLLM</code> <code>A100</code> <code>Model Serving</code></p>
     </td>
   </tr>
   <tr>
     <td width="50%" valign="top">
-      <p><strong><a href="https://github.com/RedHeartSecretMan/a-share-research-skill">🔎 a-share-research-skill</a></strong></p>
-      <p>An evidence-first A-share research Skill with deterministic data lineage, explicit provenance, fail-closed identity resolution, and reproducible valuation.</p>
-      <p><code>Python</code> <code>Agent Skill</code> <code>Research</code> <code>Data Provenance</code></p>
+      <h3><a href="https://github.com/RedHeartSecretMan/vllm-oxide">vllm-oxide</a></h3>
+      <p>Rust LLM inference engine built on Candle.<br>Uses custom CUDA kernels and continuous batching.<br>Adds prefix caching and a paged KV cache.</p>
+      <p><code>Rust</code> <code>CUDA</code> <code>Candle</code></p>
     </td>
     <td width="50%" valign="top">
-      <p><strong><a href="https://github.com/RedHeartSecretMan/dag-skill">🕸️ dag-skill</a></strong></p>
-      <p>An orchestration Skill for approved Spec-and-Ticket DAGs, coordinating single-Ticket Execution Agents through evidence-backed review, controlled integration, and bounded rework.</p>
-      <p><code>Python</code> <code>Multi-Agent</code> <code>Git</code> <code>Workflow Automation</code></p>
+      <h3><a href="https://github.com/RedHeartSecretMan/dag-skill">dag-skill</a></h3>
+      <p>Coordinates approved Ticket dependency graphs.<br>Runs one execution agent per Ticket in Git.<br>Reviews before integration.</p>
+      <p><code>Agent Skill</code> <code>Multi-Agent</code> <code>Git</code></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top">
+      <h3><a href="https://github.com/RedHeartSecretMan/a-share-research-skill">a-share-research-skill</a></h3>
+      <p>Routes A-share research questions to a deterministic Python CLI whose results record the security, as-of date, sources, and calculation lineage.</p>
+      <p><code>Agent Skill</code> <code>Python CLI</code> <code>A-share</code></p>
+    </td>
+    <td width="50%" valign="top">
+      <h3><a href="https://github.com/RedHeartSecretMan/agent-recipes">agent-recipes</a></h3>
+      <p>Personal agent rules, Skill sources, and MCP settings kept in one repository and shared across Codex, Claude, DSH, and Cursor.</p>
+      <p><code>Agent Rules</code> <code>Skills</code> <code>MCP</code></p>
     </td>
   </tr>
 </table>
 
-## 📊 GitHub Stats
+## Stats
 
 <div align="center">
 
