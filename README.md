@@ -26,6 +26,13 @@
 <table>
   <tr>
     <td colspan="2" valign="top">
+      <p><strong><a href="https://github.com/RedHeartSecretMan/vllm-dsf-rearguard">🛡️ vllm-dsf-rearguard</a></strong></p>
+      <p>An A100-focused DeepSeek-V4.1-Flash adaptation on pinned vLLM, serving 1M context with multimodal inputs and evidence-backed validation.</p>
+      <p><code>Python</code> <code>vLLM</code> <code>A100</code> <code>Inference Validation</code></p>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" valign="top">
       <p><strong><a href="https://github.com/RedHeartSecretMan/vllm-oxide">🦀 vllm-oxide</a></strong></p>
       <p>A single-GPU, offline LLM inference engine in Rust with continuous batching, prefix caching, paged KV cache, and correctness gates against reference implementations.</p>
       <p><code>Rust</code> <code>CUDA</code> <code>LLM Inference</code> <code>Paged Attention</code></p>
