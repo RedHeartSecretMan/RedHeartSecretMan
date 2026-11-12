@@ -7,7 +7,7 @@
 把复杂的 AI 系统做得可靠、可解释、可复现。<br>
 <i>Building trustworthy AI systems, from inference runtimes to evidence-first agent workflows.</i>
 
-[Personal Site](https://redheartsecretman.top/) · [3D Résumé](https://me.redheartsecretman.top/)
+[Home](https://redheartsecretman.top/) · [Résumé](https://me.redheartsecretman.top/)
 
 <br>
 
