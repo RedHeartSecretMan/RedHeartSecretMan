@@ -44,18 +44,200 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           USERNAME: ${{ github.repository_owner }}
 
-      - name: Remove duplicate 3D summary and period
+      - name: Post-process 3D contribution SVG
         shell: bash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          USERNAME: ${{ github.repository_owner }}
         run: |
           python3 - <<'PY'
+          from html import escape
+          import json
+          import math
+          import os
           from pathlib import Path
+          import urllib.request
           import xml.etree.ElementTree as ET
 
           svg = "{http://www.w3.org/2000/svg}"
+          donut_marker = '<g transform="translate(40, 520)">'
           paths = (
               Path("profile-3d-contrib/profile-season-animate.svg"),
               Path("profile-3d-contrib/profile-night-rainbow.svg"),
           )
+
+          def fetch_public_languages(login: str, token: str) -> list[dict]:
+              endpoint = os.environ.get("GITHUB_GRAPHQL_URL", "https://api.github.com/graphql")
+              query = """
+              query($login: String!, $cursor: String) {
+                user(login: $login) {
+                  repositories(
+                    first: 100
+                    after: $cursor
+                    ownerAffiliations: OWNER
+                    isFork: false
+                    privacy: PUBLIC
+                  ) {
+                    pageInfo {
+                      hasNextPage
+                      endCursor
+                    }
+                    nodes {
+                      languages(first: 100, orderBy: { field: SIZE, direction: DESC }) {
+                        edges {
+                          size
+                          node {
+                            name
+                            color
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+              """
+              totals: dict[str, dict] = {}
+              cursor = None
+              while True:
+                  payload = json.dumps({
+                      "query": query,
+                      "variables": {"login": login, "cursor": cursor},
+                  }).encode("utf-8")
+                  req = urllib.request.Request(
+                      endpoint,
+                      data=payload,
+                      headers={
+                          "Authorization": f"Bearer {token}",
+                          "Content-Type": "application/json",
+                          "User-Agent": "profile-assets-workflow",
+                      },
+                      method="POST",
+                  )
+                  with urllib.request.urlopen(req, timeout=30) as resp:
+                      body = json.loads(resp.read().decode("utf-8"))
+                  if body.get("errors"):
+                      raise SystemExit(f"GitHub GraphQL error: {body['errors']}")
+                  repos = body["data"]["user"]["repositories"]
+                  for repo in repos["nodes"]:
+                      for edge in repo["languages"]["edges"]:
+                          name = edge["node"]["name"]
+                          if name == "Jupyter Notebook":
+                              continue
+                          size = int(edge["size"])
+                          if size <= 0:
+                              continue
+                          color = edge["node"].get("color") or "#444444"
+                          if name in totals:
+                              totals[name]["size"] += size
+                          else:
+                              totals[name] = {"language": name, "color": color, "size": size}
+                  page_info = repos["pageInfo"]
+                  if not page_info["hasNextPage"]:
+                      break
+                  cursor = page_info["endCursor"]
+
+              ordered = sorted(totals.values(), key=lambda item: item["size"], reverse=True)
+              top = ordered[:7]
+              other_size = sum(item["size"] for item in ordered[7:])
+              if other_size > 0:
+                  top.append({"language": "other", "color": "#444444", "size": other_size})
+              if not top:
+                  raise SystemExit("no public non-Jupyter language bytes found")
+              return top
+
+          def build_donut_group(langs: list[dict], is_animate: bool) -> str:
+              height = 260.0
+              radius = height / 2.0
+              margin = radius / 10.0
+              outer_r = radius - margin
+              inner_r = radius / 2.0
+              row = 8.0
+              count = len(langs)
+              offset = (row - count) / 2.0 + 0.5
+              font_size = height / row / 1.5
+              total = sum(item["size"] for item in langs)
+
+              def animate_values(idx: int) -> str:
+                  steps = 5
+                  vals = []
+                  for step in range(count + steps):
+                      if step < idx:
+                          vals.append("0")
+                      else:
+                          val = min((step - idx) / steps, 1.0)
+                          vals.append("1" if val == 1.0 else f"{val:g}")
+                  return ";".join(vals)
+
+              def anim_tag(idx: int) -> str:
+                  if not is_animate:
+                      return ""
+                  return (
+                      f'<animate attributeName="fill-opacity" values="{animate_values(idx)}" '
+                      'dur="3s" repeatCount="1"></animate>'
+                  )
+
+              legend_parts = []
+              text_parts = []
+              for i, item in enumerate(langs):
+                  row_y = (i + offset) * (height / row)
+                  rect_y = row_y - font_size / 2.0
+                  anim = anim_tag(i)
+                  legend_parts.append(
+                      f'<rect x="0" y="{rect_y:g}" width="{font_size:g}" height="{font_size:g}" '
+                      f'fill="{item["color"]}" class="stroke-bg" stroke-width="1px">{anim}</rect>'
+                  )
+                  text_parts.append(
+                      f'<text dominant-baseline="middle" x="{font_size * 1.2:g}" y="{row_y:g}" '
+                      f'class="fill-fg" font-size="{font_size:g}px">{escape(item["language"])}{anim}</text>'
+                  )
+
+              slice_parts = []
+              angle = 0.0
+              for i, item in enumerate(langs):
+                  frac = item["size"] / total
+                  delta = 2.0 * math.pi * frac
+                  a0 = angle
+                  a1 = angle + delta
+                  angle = a1
+                  if delta >= 2.0 * math.pi - 1e-9:
+                      d = (
+                          f"M0,{-outer_r:g}A{outer_r:g},{outer_r:g},0,1,1,0,{outer_r:g}"
+                          f"A{outer_r:g},{outer_r:g},0,1,1,0,{-outer_r:g}"
+                          f"M0,{-inner_r:g}A{inner_r:g},{inner_r:g},0,1,0,0,{inner_r:g}"
+                          f"A{inner_r:g},{inner_r:g},0,1,0,0,{-inner_r:g}Z"
+                      )
+                  else:
+                      large = 1 if delta > math.pi else 0
+                      x0o, y0o = outer_r * math.sin(a0), -outer_r * math.cos(a0)
+                      x1o, y1o = outer_r * math.sin(a1), -outer_r * math.cos(a1)
+                      x1i, y1i = inner_r * math.sin(a1), -inner_r * math.cos(a1)
+                      x0i, y0i = inner_r * math.sin(a0), -inner_r * math.cos(a0)
+                      d = (
+                          f"M{x0o:.3f},{y0o:.3f}"
+                          f"A{outer_r:g},{outer_r:g},0,{large},1,{x1o:.3f},{y1o:.3f}"
+                          f"L{x1i:.3f},{y1i:.3f}"
+                          f"A{inner_r:g},{inner_r:g},0,{large},0,{x0i:.3f},{y0i:.3f}Z"
+                      )
+                  pct = frac * 100.0
+                  slice_parts.append(
+                      f'<path d="{d}" style="fill: {item["color"]};" class="stroke-bg" stroke-width="0.5px">'
+                      f'<title>{escape(item["language"])} {pct:.2f}%</title>{anim_tag(i)}</path>'
+                  )
+
+              return (
+                  f'{donut_marker}'
+                  f'<g transform="translate({radius * 2.1:g}, 0)">'
+                  + "".join(legend_parts)
+                  + "".join(text_parts)
+                  + "</g>"
+                  + f'<g transform="translate({radius:g}, {radius:g})">'
+                  + "".join(slice_parts)
+                  + "</g></g>"
+              )
+
+          langs = fetch_public_languages(os.environ["USERNAME"], os.environ["GITHUB_TOKEN"])
+          print("public language breakdown (top 7 + other):", langs)
 
           for path in paths:
               source = path.read_text(encoding="utf-8")
@@ -93,7 +275,7 @@ jobs:
 
               start = source.index(start_marker)
               end = source.rfind(closing_marker) + len("</g>")
-              stripped = source[:start] + source[end:]
+              stripped = (source[:start] + source[end:]).rstrip()
               stripped_root = ET.fromstring(stripped)
               if any(
                   node.attrib.get("y") == summary_y
@@ -108,8 +290,34 @@ jobs:
                   for node in stripped_root.iter(f"{svg}text")
               ):
                   raise SystemExit(f"{path}: period removal verification failed")
-              path.write_text(stripped, encoding="utf-8")
-              print(f"stripped duplicate summary and period from {path}")
+
+              if stripped.count(donut_marker) != 1 or not stripped.endswith("</g></svg>"):
+                  raise SystemExit(f"{path}: expected language donut group at end of SVG")
+
+              donut_start = stripped.index(donut_marker)
+              old_donut = stripped[donut_start:-len("</svg>")]
+              is_animate = "<animate " in old_donut
+              new_donut = build_donut_group(langs, is_animate=is_animate)
+              updated = stripped[:donut_start] + new_donut + "</svg>"
+
+              updated_root = ET.fromstring(updated)
+              donut_groups = [
+                  node
+                  for node in updated_root.iter(f"{svg}g")
+                  if node.attrib.get("transform") == "translate(40, 520)"
+              ]
+              if len(donut_groups) != 1:
+                  raise SystemExit(f"{path}: expected one donut group after rewrite")
+              donut_texts = [node.text for node in donut_groups[0].iter(f"{svg}text")]
+              expected_labels = [item["language"] for item in langs]
+              if donut_texts != expected_labels:
+                  raise SystemExit(f"{path}: donut label mismatch: {donut_texts!r} != {expected_labels!r}")
+              donut_paths = list(donut_groups[0].iter(f"{svg}path"))
+              if len(donut_paths) != len(langs):
+                  raise SystemExit(f"{path}: donut slice count mismatch")
+
+              path.write_text(updated, encoding="utf-8")
+              print(f"updated summary, period, and public language donut in {path}")
           PY
 
       - name: Publish 3D contribution graph
